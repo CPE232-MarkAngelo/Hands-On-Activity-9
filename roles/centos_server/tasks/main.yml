@@ -1,0 +1,67 @@
+####### INSTALLING PROMETHEUS ON CENTOS ######
+---
+ - name: install apache and php
+   tags: apache,centos,httpd
+   dnf:
+     name: 
+       - httpd
+       - php
+     state: latest
+
+ - name: install mariadb package
+   tags: centos,db,mariadb
+   dnf:
+     name: mariadb-server
+     state: latest
+
+ - name: restart/enable mariadb
+   tags: res_serv,centos
+   service:
+     name: mariadb
+     state: restarted
+     enabled: true
+
+ - name: start httpd
+   tags: centos,httpd
+   service:
+     name: httpd
+     state: started
+     enabled: true
+
+ - name: install packages
+   tags: cent_package
+   dnf:
+     name:
+       - firewalld
+       - snapd
+     state: latest
+
+ - name: install prometheus
+   command: sudo snap install prometheus
+
+ - name: open 9090 port
+   tags: open_9090
+   service:
+     name: firewalld
+     state: restarted     
+   enabled: true
+
+
+ - name: start prometheus service
+   tags: startcent_prome
+   shell:
+     snap start prometheus
+
+ - name: restart prometheus service
+   tags: restcent_prome
+   shell:
+     snap restart prometheus
+
+ - name: restart firewalld
+   tags: rest_firewalld
+   service: 
+     name: firewalld
+     state: restarted
+     enabled: true
+
+ 

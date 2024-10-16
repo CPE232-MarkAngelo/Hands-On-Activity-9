@@ -1,0 +1,5 @@
+[ubuntu_server]
+192.168.56.121 ansible_user=ma_server1
+
+[centos_server]
+192.168.56.122 ansible_user=ma_centos
